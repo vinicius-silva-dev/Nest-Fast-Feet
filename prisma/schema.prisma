@@ -1,0 +1,55 @@
+// Falta rodar o npx prisma migrate dev
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  cpf String @unique
+  password String
+  role String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  package Package[]
+
+  @@map("users")
+}
+
+model Recipient {
+  id String @id @default(uuid())
+  name String
+  rua String
+  numero Int
+  bairro String
+  cidade String
+  estado String
+  latitude Decimal
+  longitude Decimal
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  package Package[]
+
+  @@map("recipient")
+}
+
+model Package {
+  id String @id @default(uuid())
+  name String
+  status String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime? @default(now()) @map("updated_at")
+  userId String @map("user_id")
+  recipientId String @map("recipient_id")
+
+  recipient Recipient @relation(fields: [recipientId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("package")
+}
