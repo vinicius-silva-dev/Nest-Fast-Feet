@@ -1,5 +1,9 @@
+/* eslint-disable prettier/prettier */
+import { Injectable } from '@nestjs/common'
 import { UserRepository } from '../../repository/user-repository'
-import { randomUUID } from 'crypto'
+import { compare } from 'bcrypt'
+// import { JwtService } from '@nestjs/jwt'
+import { Encrypter } from '../../cryptography/encrypter'
 
 interface AuthenticateRequest {
   cpf: string
@@ -7,11 +11,15 @@ interface AuthenticateRequest {
 }
 
 type AuthenticateResponse = {
-  token: any
+  token: string
 }
-
+@Injectable()
 export class AuthenticateUseCase {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private encrypter: Encrypter
+  ) {}
+
   async execute({
     cpf,
     password,
@@ -22,16 +30,16 @@ export class AuthenticateUseCase {
       throw new Error('User not found')
     }
 
-    if (password !== user.password) {
+    const isPassword = await compare(password, user.password)
+
+    if (!isPassword) {
       throw new Error('Invalid authenticate')
     }
 
-    const tokenRandon = {
-      token: randomUUID(),
-    }
+    const payload = await this.encrypter.encrypt({ sub: user.id.toString()})
 
     return {
-      token: tokenRandon,
+      token: payload
     }
   }
 }

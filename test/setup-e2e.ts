@@ -26,13 +26,12 @@ function generateUniqueDataBaseURL(schemaId: string) {
 const schemaId = randomUUID()
 
 beforeAll(async () => {
-  console.log('criando')
+  
   const databaseURL = generateUniqueDataBaseURL(schemaId)
   
   process.env.DATABASE_URL = databaseURL
 
   execSync('npx prisma migrate deploy')
-  console.log(databaseURL)
 })
 
 afterAll(async () => {

@@ -3,8 +3,9 @@ import { UserRepository } from 'src/domain/fast-feet/application/repository/user
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 import { PrismaService } from '../prisma.service'
 import { PrismaUserMappers } from '../mappers/prisma-user-mappers'
+import { Injectable } from '@nestjs/common'
 
-
+@Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(
     private prisma: PrismaService
@@ -55,7 +56,6 @@ export class PrismaUserRepository implements UserRepository {
   async create(user: User): Promise<void> {
     try {
       const data = PrismaUserMappers.toPrisma(user)
-      console.log(data)
       await this.prisma.user.create({
         data
       })

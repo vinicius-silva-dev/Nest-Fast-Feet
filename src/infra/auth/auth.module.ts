@@ -13,9 +13,12 @@ import { EnvService } from 'src/env/env.service';
       useFactory(env: EnvService) {
         
         const privateKey = env.get('JWT_SECRET')
+        const publicKey = env.get('JWT_PUBLIC_KEY')
 
         return {
-          privateKey: Buffer.from(privateKey)
+          signOptions: { algorithm: 'RS256' },
+          privateKey: Buffer.from(privateKey, 'base64'),
+          publicKey: Buffer.from(publicKey, 'base64')
         }
       },
 

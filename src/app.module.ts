@@ -17,7 +17,6 @@ import { HttpModule } from './infra/http/http.module'
     EnvModule,
     HttpModule,
   ],
-  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}
