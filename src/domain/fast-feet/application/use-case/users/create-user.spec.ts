@@ -12,7 +12,6 @@ describe('Create user', async () => {
   })
   test('should be abble to create user', async () => {
     await sut.execute({
-      id: 'user-1',
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',

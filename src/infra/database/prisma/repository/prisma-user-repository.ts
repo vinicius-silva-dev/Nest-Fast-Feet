@@ -53,6 +53,17 @@ export class PrismaUserRepository implements UserRepository {
     return user.map(PrismaUserMappers.toDomain)
   }
 
+  async save(user: User): Promise<void> {
+    const data = PrismaUserMappers.toPrisma(user)
+    
+    await this.prisma.user.update({
+      where: {
+        id: data.id
+      },
+      data
+    })
+  }
+
   async create(user: User): Promise<void> {
     try {
       const data = PrismaUserMappers.toPrisma(user)
@@ -65,15 +76,7 @@ export class PrismaUserRepository implements UserRepository {
 
   }
 
-  async save(user: User): Promise<void> {
-    const data = PrismaUserMappers.toPrisma(user)
-    await this.prisma.user.update({
-      where: {
-        id: data.id
-      },
-      data
-    })
-  }
+
 
 
   async delete(user: User): Promise<void> {

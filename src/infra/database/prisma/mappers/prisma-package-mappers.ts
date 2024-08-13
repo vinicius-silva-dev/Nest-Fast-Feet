@@ -8,7 +8,6 @@ export class PrismaPackageMappers {
 
     return Package.create({
       name: raw.name,
-      userId: raw.userId,
       recipientId: raw.recipientId,
       status: new StatusValueObject(),
       createdAt: raw.createdAt,
@@ -21,7 +20,6 @@ export class PrismaPackageMappers {
     return {
       id: _package.id.toString(),
       name: _package.name,
-      userId: _package.userId,
       recipientId: _package.recipientId,
       status: _package.status.toValue(),
       createdAt: _package.createdAt,

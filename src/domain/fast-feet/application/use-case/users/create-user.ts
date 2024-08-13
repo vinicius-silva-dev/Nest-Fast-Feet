@@ -1,4 +1,3 @@
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 import { UserRepository } from '../../repository/user-repository'
 import { hash } from 'bcrypt'
@@ -28,7 +27,6 @@ export class CreateUserUseCase {
     createdAt,
   }: CreateUserRequest): Promise<CreateUserResponse> {
     const user = await User.create({
-      id: new UniqueEntityId(),
       name,
       cpf,
       password: await hash(password, 8),

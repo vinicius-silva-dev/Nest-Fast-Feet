@@ -19,24 +19,20 @@ export class AuthenticateController {
   @Post()
   async auth(@Body() body: Auth) {
     const { cpf, password } = body
-    console.log('passou aqui')
-    try {
-      const result = await this.authenticateUseCase.execute({
-        cpf,
-        password
-      })
 
-      if (!result) {
-        throw new Error('Fail authenticate')
-      }
-  
-      console.log(result.token)
-      return {
-        acess_token: result.token
-      }
-    } catch (error) {
-      console.error('deu ruim', error)
+    const result = await this.authenticateUseCase.execute({
+      cpf,
+      password
+    })
+
+    if (!result) {
+      throw new Error('Fail authenticate')
     }
+
+    return {
+      acess_token: result.token
+    }
+    
 
 
   

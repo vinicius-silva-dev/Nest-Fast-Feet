@@ -6,6 +6,7 @@ import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest'
 import { hash } from 'bcrypt';
+import { DatabaseModule } from 'src/infra/database/database.module';
 
 
 describe('[POST] Authenticate E2E', () => {
@@ -14,12 +15,13 @@ describe('[POST] Authenticate E2E', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-        imports: [AppModule],
+        imports: [AppModule, DatabaseModule],
       }).compile();
     
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)
+  
   
     await app.init()
   });
@@ -33,14 +35,16 @@ describe('[POST] Authenticate E2E', () => {
         role: 'Admin'
       }
     })
-    const result = await request(app.getHttpServer()).post('/auth').send({
-      cpf: '03544587432',
-      password: '123456',
-    })
+    // console.log(user)
 
-    expect(result.statusCode).toBe(201)
-    expect(result.body).toEqual({
-      acess_token: expect.any(String)
-    })
+     const result = await request(app.getHttpServer()).post('/auth').send({
+       cpf: '03544587432',
+       password: '123456',
+     })
+      expect(result.statusCode).toBe(201)
+      expect(result.body).toEqual({
+       acess_token: expect.any(String)
+     })
+
   })
 })

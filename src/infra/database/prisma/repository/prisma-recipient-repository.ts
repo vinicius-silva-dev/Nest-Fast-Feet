@@ -3,8 +3,9 @@ import { RecipientRepository } from 'src/domain/fast-feet/application/repository
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 import { PrismaService } from '../prisma.service'
 import { PrismaRecipientMappers } from '../mappers/prisma-recipient-mappers'
+import { Injectable } from '@nestjs/common'
 
-
+@Injectable()
 export class PrismaRecipientRepository implements RecipientRepository {
   constructor(
     private prisma: PrismaService

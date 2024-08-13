@@ -1,21 +1,19 @@
 import { Entity } from 'src/core/entities/entity'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+// import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 export interface UserProps {
-  id: UniqueEntityId
   name: string
   cpf: string
   password: string
   role: string
-  // id: string[]
   createdAt: Date
   updatedAt?: Date | null
 }
 
 export class User extends Entity<UserProps> {
-  get id() {
-    return this.props.id
-  }
+  // get id() {
+  //   return this.props.id
+  // }
 
   get name() {
     return this.props.name
@@ -33,8 +31,8 @@ export class User extends Entity<UserProps> {
     return this.props.role
   }
 
-  // get id (){
-  //   return this.props.id
+  // get packageId() {
+  //   return this.props.packageId
   // }
 
   get createdAt() {
@@ -55,8 +53,8 @@ export class User extends Entity<UserProps> {
     this.touch()
   }
 
-  // set id (id: string[]) {
-  //   this.props.id = id
+  // set packageId(packageId: string[]) {
+  //   this.props.packageId = packageId
 
   //   this.touch()
   // }

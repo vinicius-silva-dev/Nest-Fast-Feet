@@ -7,7 +7,6 @@ import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 interface PackageRequest {
   id: UniqueEntityId
   name: string
-  userId: string
   recipient: Recipient
   status: StatusValueObject
   createdAt: Date
@@ -22,7 +21,6 @@ export class CreatePackageUseCase {
   async execute({
     id,
     name,
-    userId,
     recipient,
     status,
     createdAt,
@@ -30,7 +28,6 @@ export class CreatePackageUseCase {
     const _package = await Package.create({
       id,
       name,
-      userId,
       recipientId: recipient.id.toString(),
       status,
       createdAt,

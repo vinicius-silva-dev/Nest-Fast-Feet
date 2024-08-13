@@ -15,8 +15,7 @@ describe('Create recipient', async () => {
     sut = new CreatePackageUseCase(inMemoryPackage)
   })
   test('should be abble to create recipient', async () => {
-    const user = await User.create({
-      id: new UniqueEntityId('user-1'),
+    await User.create({
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
@@ -40,7 +39,6 @@ describe('Create recipient', async () => {
     await sut.execute({
       id: new UniqueEntityId('package-1'),
       name: 'Computador Acer Nitro 5 515-65',
-      userId: user.id.toString(),
       recipient,
       status: new StatusValueObject(),
       createdAt: new Date(),

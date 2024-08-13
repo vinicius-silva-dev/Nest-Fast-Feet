@@ -12,7 +12,7 @@ import { EnvService } from 'src/env/env.service';
       global: true,
       useFactory(env: EnvService) {
         
-        const privateKey = env.get('JWT_SECRET')
+        const privateKey = env.get('JWT_PRIVATE_KEY')
         const publicKey = env.get('JWT_PUBLIC_KEY')
 
         return {
@@ -28,4 +28,4 @@ import { EnvService } from 'src/env/env.service';
     EnvService
   ]
 })
-export class Auth {}
+export class AuthModule {}

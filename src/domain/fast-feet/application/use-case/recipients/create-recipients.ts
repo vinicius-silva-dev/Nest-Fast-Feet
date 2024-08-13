@@ -1,11 +1,12 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 import { RecipientRepository } from '../../repository/recipient-repository'
+import { Injectable } from '@nestjs/common'
 
 interface RecipientsRequest {
   id: UniqueEntityId
   name: string
-  packageId: string[]
+  packageId?: string[]
   rua: string
   numero: number
   bairro: string
@@ -18,6 +19,8 @@ interface RecipientsRequest {
 type RecipientsResponse = {
   recipient: Recipient
 }
+
+@Injectable()
 export class CreateRecipientsUseCase {
   constructor(private recipienRepository: RecipientRepository) {}
 

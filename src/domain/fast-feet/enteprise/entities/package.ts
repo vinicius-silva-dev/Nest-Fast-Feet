@@ -15,7 +15,6 @@ import { StatusValueObject } from './value-object/status'
 export interface PackageProps {
   id: UniqueEntityId
   name: string
-  userId: string
   recipientId: string
   status: StatusValueObject
   createdAt: Date
@@ -31,9 +30,9 @@ export class Package extends AggregateRoot<PackageProps> {
     return this.props.name
   }
 
-  get userId() {
-    return this.props.userId
-  }
+  // get userId() {
+  //   return this.props.userId
+  // }
 
   get recipientId() {
     return this.props.recipientId
@@ -55,9 +54,9 @@ export class Package extends AggregateRoot<PackageProps> {
     this.props.status = status
   }
 
-  set userId(userId: string) {
-    this.props.userId = userId
-  }
+  // set userId(userId: string) {
+  //   this.props.userId = userId
+  // }
 
   // set recipient(recipient: Recipient) {
   //   this.props.recipient = recipient
