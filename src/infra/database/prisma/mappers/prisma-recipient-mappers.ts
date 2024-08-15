@@ -5,8 +5,8 @@ import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 export class PrismaRecipientMappers {
   static toDomain(raw: PrismaRecipient) {
-    const latitude = parseFloat(raw.latitude.toString())
-    const longitude = parseFloat(raw.latitude.toString())
+    const latitude = parseInt(raw.latitude.toString())
+    const longitude = parseInt(raw.longitude.toString())
     return Recipient.create({
       name: raw.name,
       rua: raw.rua,
@@ -18,9 +18,8 @@ export class PrismaRecipientMappers {
       longitude,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-      id: new UniqueEntityId(),
       packageId: []
-    })
+    }, new UniqueEntityId(raw.id))
   }
 
   static toPrisma(recipient: Recipient): Prisma.RecipientUncheckedCreateInput {

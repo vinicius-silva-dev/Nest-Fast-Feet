@@ -1,10 +1,8 @@
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 import { RecipientRepository } from '../../repository/recipient-repository'
 import { Injectable } from '@nestjs/common'
 
 interface RecipientsRequest {
-  id: UniqueEntityId
   name: string
   packageId?: string[]
   rua: string
@@ -25,7 +23,6 @@ export class CreateRecipientsUseCase {
   constructor(private recipienRepository: RecipientRepository) {}
 
   async execute({
-    id,
     name,
     packageId,
     rua,
@@ -37,7 +34,6 @@ export class CreateRecipientsUseCase {
     longitude,
   }: RecipientsRequest): Promise<RecipientsResponse> {
     const recipient = await Recipient.create({
-      id,
       name,
       packageId,
       rua,

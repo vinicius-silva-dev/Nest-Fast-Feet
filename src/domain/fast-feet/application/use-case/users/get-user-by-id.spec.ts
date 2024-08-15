@@ -14,7 +14,6 @@ describe('Get user', async () => {
   })
   test('should be abble to get user by id', async () => {
     const user = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',

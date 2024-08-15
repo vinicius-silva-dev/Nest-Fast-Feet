@@ -1,8 +1,6 @@
 import { Entity } from 'src/core/entities/entity'
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
-
 export interface RecipientProps {
-  id: UniqueEntityId
   name: string
   packageId: string[]
   rua: string
@@ -17,9 +15,9 @@ export interface RecipientProps {
 }
 
 export class Recipient extends Entity<RecipientProps> {
-  get id() {
-    return this.props.id
-  }
+  // get id() {
+  //   return this.props.id
+  // }
 
   get name() {
     return this.props.name
@@ -107,15 +105,15 @@ export class Recipient extends Entity<RecipientProps> {
 
   toValue() {
     const recipient = {
-      id: this.props.id,
+      id: this.id,
       latitude: this.props.latitude,
       logitude: this.props.longitude,
     }
     return recipient
   }
 
-  static create(props: RecipientProps) {
-    const recipient = new Recipient(props)
+  static create(props: RecipientProps, id?: UniqueEntityId) {
+    const recipient = new Recipient(props, id)
     return recipient
   }
 }

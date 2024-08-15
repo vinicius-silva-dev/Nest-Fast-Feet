@@ -1,4 +1,5 @@
 import { Entity } from 'src/core/entities/entity'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 // import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 export interface UserProps {
@@ -65,8 +66,8 @@ export class User extends Entity<UserProps> {
     this.touch()
   }
 
-  static create(props: UserProps) {
-    const user = new User(props)
+  static create(props: UserProps, id?: UniqueEntityId) {
+    const user = new User(props, id)
     return user
   }
 }

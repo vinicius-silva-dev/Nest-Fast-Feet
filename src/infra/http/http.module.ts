@@ -10,20 +10,38 @@ import { CreateRecipientController } from './controllers/recipient/create-recipi
 import { CreateRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/create-recipients'
 import { EditUserUseCase } from 'src/domain/fast-feet/application/use-case/users/edit-user'
 import { EditUserController } from './controllers/users/edit-user.controller'
+import { DeleteUserController } from './controllers/users/delete-user.controller'
+import { DeleteUserUseCase } from 'src/domain/fast-feet/application/use-case/users/delete-user'
+import { EditRecipientController } from './controllers/recipient/edit-recipient.controller'
+import { EditRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/edit-recipient'
+import { FetchUsersController } from './controllers/users/fetch-users.controller'
+import { FetchUsersUseCase } from 'src/domain/fast-feet/application/use-case/users/fetch-users'
+import { DeleteRecipientController } from './controllers/recipient/delete-recipient.controller'
+import { DeleteRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/delete-recipient'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
   controllers: [
     CreateUserController,
+    FetchUsersController,
     AuthenticateController, 
+    EditUserController,
+    DeleteUserController,
+
     CreateRecipientController,
-    EditUserController
+    EditRecipientController,
+    DeleteRecipientController
   ],
   providers: [
     CreateUserUseCase,
+    FetchUsersUseCase,
     AuthenticateUseCase,
+    EditUserUseCase,
+    DeleteUserUseCase,
+
     CreateRecipientsUseCase,
-    EditUserUseCase
+    EditRecipientsUseCase,
+    DeleteRecipientsUseCase
   ]
 })
 export class HttpModule {}

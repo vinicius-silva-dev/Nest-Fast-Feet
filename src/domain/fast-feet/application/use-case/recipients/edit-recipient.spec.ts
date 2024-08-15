@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import { InMemoryRecipients } from '../../../../../../test/repository/in-memory-recipients'
 import { EditRecipientsUseCase } from './edit-recipient'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 
 let inMemoryEdit: InMemoryRecipients
@@ -14,7 +13,6 @@ describe('Edit recipient', async () => {
   })
   test('should be abble to edit recipient', async () => {
     const edit = await Recipient.create({
-      id: new UniqueEntityId('recipient-1'),
       name: 'Vinicius Silva',
       rua: 'Ali Perto',
       numero: 2544,
@@ -30,10 +28,12 @@ describe('Edit recipient', async () => {
     await inMemoryEdit.create(edit)
 
     await sut.execute({
-      id: new UniqueEntityId('recipient-1'),
+      id: edit.id.toString(),
       rua: 'Ali Perto',
       numero: 3028,
       bairro: 'Jardim luz',
+      latitude: -10.4589549,
+      longitude: -62.4639925,
     })
     expect(inMemoryEdit.items[0]).toMatchObject({
       numero: 3028,

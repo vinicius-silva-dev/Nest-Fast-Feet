@@ -1,20 +1,18 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import { InMemoryUser } from '../../../../../../test/repository/in-memory-user'
-import { FetchUsers } from './fetch-users'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
+import { FetchUsersUseCase } from './fetch-users'
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 
 let inMemoryUser: InMemoryUser
-let sut: FetchUsers
+let sut: FetchUsersUseCase
 describe('Fetch users', async () => {
   beforeEach(() => {
     inMemoryUser = new InMemoryUser()
 
-    sut = new FetchUsers(inMemoryUser)
+    sut = new FetchUsersUseCase(inMemoryUser)
   })
   test('should be abble to fetch user by params', async () => {
     const user1 = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
@@ -25,7 +23,6 @@ describe('Fetch users', async () => {
     inMemoryUser.create(user1)
 
     const user2 = await User.create({
-      id: new UniqueEntityId('user-2'),
       name: 'Marcos Santos',
       cpf: '000.200.111-85',
       password: '123456',
@@ -36,7 +33,6 @@ describe('Fetch users', async () => {
     inMemoryUser.create(user2)
 
     const user3 = await User.create({
-      id: new UniqueEntityId('user-3'),
       name: 'José Silva',
       cpf: '010.000.111-85',
       password: '123456',

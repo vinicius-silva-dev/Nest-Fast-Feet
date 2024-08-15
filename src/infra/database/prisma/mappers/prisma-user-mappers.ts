@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 import { Prisma, User as PrismaUser } from '@prisma/client'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 
 export class PrismaUserMappers {
   static toDomain(raw: PrismaUser) {
@@ -11,7 +12,7 @@ export class PrismaUserMappers {
       role: raw.role,
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
-    })
+    }, new UniqueEntityId(raw.id))
   }
 
   static toPrisma(user: User): Prisma.UserUncheckedCreateInput {

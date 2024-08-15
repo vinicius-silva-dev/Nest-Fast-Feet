@@ -1,10 +1,11 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { RecipientRepository } from '../../repository/recipient-repository'
+import { Injectable } from '@nestjs/common'
 
 interface RecipientsRequest {
   recipientId: UniqueEntityId
 }
-
+@Injectable()
 export class DeleteRecipientsUseCase {
   constructor(private recipienRepository: RecipientRepository) {}
 

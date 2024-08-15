@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, HttpCode, Post } from '@nestjs/common'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id';
 import { CreateRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/create-recipients';
 import { z } from 'zod';
 
@@ -27,7 +26,6 @@ export class CreateRecipientController {
   @HttpCode(201)
   async create(@Body() body: RecipientType) {
     const {
-
       name,
       rua,
       numero,
@@ -39,7 +37,6 @@ export class CreateRecipientController {
     } = body
 
     const result = await this.recipientUseCase.execute({
-      id: new UniqueEntityId(),
       name,
       rua,
       numero,

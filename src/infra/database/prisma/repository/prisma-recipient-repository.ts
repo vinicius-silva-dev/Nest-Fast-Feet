@@ -36,6 +36,7 @@ export class PrismaRecipientRepository implements RecipientRepository {
   }
 
   async save(recipient: Recipient): Promise<void> {
+    console.log(recipient)
     const data = PrismaRecipientMappers.toPrisma(recipient)
     await this.prisma.recipient.update({
       where: {
