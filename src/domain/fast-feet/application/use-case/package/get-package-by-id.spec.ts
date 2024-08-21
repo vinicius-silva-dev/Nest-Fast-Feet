@@ -17,16 +17,15 @@ describe('Get package', async () => {
   })
   test('should be abble to get package', async () => {
     const user = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
       role: 'entregador',
+      packageId: [],
       createdAt: new Date(),
     })
 
     const recipient = await Recipient.create({
-      id: new UniqueEntityId('recipient-1'),
       name: 'Vinicius Silva',
       rua: 'Ali Perto',
       packageId: [],
@@ -39,11 +38,10 @@ describe('Get package', async () => {
       createdAt: new Date(),
     })
     const _package = await Package.create({
-      id: new UniqueEntityId('package-1'),
       name: 'Computador Acer Nitro 5 515-65',
       userId: user.id.toString(),
       recipientId: recipient.id.toString(),
-      status: new StatusValueObject(),
+      status: new StatusValueObject().toValue(),
       createdAt: new Date(),
     })
 

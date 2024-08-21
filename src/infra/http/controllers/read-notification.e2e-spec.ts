@@ -5,31 +5,26 @@ import { AppModule } from 'src/app.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest'
+import { UserFactory } from 'test/factory/make-user';
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { RecipientFactory } from 'test/factory/make-recipient';
-// import { hash } from 'bcrypt';
 
-describe('Edit Recipient e2e', () => {
+describe('Read Notification e2e', () => {
   let app: INestApplication
   let prisma: PrismaService
-  // let recipientFactory: RecipientFactory
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [AppModule, DatabaseModule],
-        providers: [RecipientFactory]
+        providers: [UserFactory]
       }).compile();
     
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)
-    // recipientFactory = moduleRef.get(RecipientFactory)
-  
     await app.init()
   });
 
-  test('[PUT] should be abble to edit recipient E2E', async () => {
-    // const recipient = await recipientFactory.makePrismaRecipient()
-
+  test('[PATCH] should be abble to read notification E2E', async () => {
+  
     const recipient = await prisma.recipient.create({
       data: {
         name: 'Vinicius Silva',
@@ -41,28 +36,31 @@ describe('Edit Recipient e2e', () => {
         latitude: -10.4589548,
         longitude: -62.4639924
       }
+        
     })
 
-    const recipientId = recipient.id
-    const result = await request(app.getHttpServer()).put(`/recipient/${recipientId}`).send({
-      rua: 'Frei Caneca',
-      numero: 1988,
-      bairro: 'Jardim Esperança',
-      cidade: recipient.cidade,
-      estado: recipient.estado,
-      latitude: -10.4589549,
-      longitude: -62.4639925
+    const notification = await prisma.notification.create({
+      data: {
+        recipientId: recipient.id,
+        title: 'Notificação',
+        content: 'Alteração de status'
+      }
     })
-    
 
+    const result = await request(app.getHttpServer()).patch(`/notification/${notification.id}`).send({
+      recipientId: recipient.id
+    })
+
+   
     expect(result.statusCode).toBe(204)
 
-    // const recipientOnDatabase = await prisma.recipient.findFirst({
-    //   where: {
-    //     role: 'Admin'
-    //   }
-    // })
-
-    // expect(recipientOnDatabase).toBeTruthy()
+    const notificationsOnDatabase = await prisma.notification.findFirst({
+      where: {
+        recipientId: recipient.id.toString()
+      }
+    })
+    console.log(notificationsOnDatabase)
+    expect(notificationsOnDatabase?.readAt).not.toBeNull()
+   
   })
 })

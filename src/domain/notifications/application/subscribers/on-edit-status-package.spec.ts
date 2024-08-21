@@ -1,11 +1,10 @@
 /* eslint-disable no-new */
 import { describe, expect, it, MockInstance, vi, beforeEach } from 'vitest'
 import { InMemoryPackage } from '../../../../../test/repository/in-memory-packege'
-import { SendNotifications } from '../user-case/send-notification'
+import { SendNotificationsUseCase } from '../user-case/send-notification'
 import { InMemoryNotifications } from '../../../../../test/repository/in-memory-notifications'
 import { waitFor } from '../../../../../utils/wait-for'
 import { OnEditStatusPackage } from './on-edit-status-package'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { Package } from 'src/domain/fast-feet/enteprise/entities/package'
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
@@ -13,14 +12,14 @@ import { StatusValueObject } from 'src/domain/fast-feet/enteprise/entities/value
 
 let inMemoryPackage: InMemoryPackage
 let inMemoryNotification: InMemoryNotifications
-let sendNotifications: SendNotifications
+let sendNotifications: SendNotificationsUseCase
 
 let sendNotificationExecuteSpy: MockInstance
 describe('On change status package', () => {
   beforeEach(() => {
     inMemoryPackage = new InMemoryPackage()
     inMemoryNotification = new InMemoryNotifications()
-    sendNotifications = new SendNotifications(inMemoryNotification)
+    sendNotifications = new SendNotificationsUseCase(inMemoryNotification)
 
     sendNotificationExecuteSpy = vi.spyOn(sendNotifications, 'execute')
 
@@ -28,16 +27,15 @@ describe('On change status package', () => {
   })
   it.only('should be abble to change status to package', async () => {
     const user = User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
       role: 'entregador',
+      packageId: [],
       createdAt: new Date(),
     })
 
     const recipient = Recipient.create({
-      id: new UniqueEntityId('recipient-1'),
       name: 'Vinicius Silva',
       rua: 'Ali Perto',
       packageId: [],
@@ -51,24 +49,23 @@ describe('On change status package', () => {
     })
 
     const _package = await Package.create({
-      id: new UniqueEntityId('package-1'),
       name: 'Vinicius Silva',
       userId: user.id.toString(),
       recipientId: recipient.id.toString(),
-      status: new StatusValueObject(),
+      status: new StatusValueObject().toValue(),
       createdAt: new Date(),
     })
 
     await inMemoryPackage.create(_package)
 
-    _package.status.Changevalue('retirado')
+    _package.status = 'retirado'
 
     await inMemoryPackage.save(_package)
 
     const notification = await sendNotifications.execute({
-      recipientId: 'user-1',
+      recipientId: recipient.id.toString(),
       title: 'Notificação',
-      content: `Pedido foi alterado para ${_package.status.toValue()} :)`,
+      content: `Pedido foi alterado para ${_package.status} :)`,
     })
 
     console.log(notification.notification)

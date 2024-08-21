@@ -1,5 +1,6 @@
 import { Package } from 'src/domain/fast-feet/enteprise/entities/package'
 import { PackageRepository } from '../../repository/package-repository'
+import { Injectable } from '@nestjs/common'
 
 interface GetPackageByIdRequest {
   id: string
@@ -8,7 +9,7 @@ interface GetPackageByIdRequest {
 type GetPackageByIdResponse = {
   _package: Package
 }
-
+@Injectable()
 export class GetPackageByIdUseCase {
   constructor(private packageRepository: PackageRepository) {}
   async execute({

@@ -1,10 +1,11 @@
 import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { PackageRepository } from '../../repository/package-repository'
+import { Injectable } from '@nestjs/common'
 
 interface PackagesRequest {
   id: UniqueEntityId
 }
-
+@Injectable()
 export class DeletePackageUseCase {
   constructor(private packageRepository: PackageRepository) {}
 

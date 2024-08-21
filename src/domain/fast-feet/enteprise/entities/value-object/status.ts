@@ -15,7 +15,7 @@ export class StatusValueObject {
     return this.value
   }
 
-  constructor(value?: Status) {
+  constructor(value?: string) {
     this.value = value ?? Status.aguardando
   }
 

@@ -7,6 +7,7 @@ export interface UserProps {
   cpf: string
   password: string
   role: string
+  packageId?: string[]
   createdAt: Date
   updatedAt?: Date | null
 }
@@ -32,9 +33,9 @@ export class User extends Entity<UserProps> {
     return this.props.role
   }
 
-  // get packageId() {
-  //   return this.props.packageId
-  // }
+  get packageId() {
+    return this.props.packageId
+  }
 
   get createdAt() {
     return this.props.createdAt
@@ -54,11 +55,11 @@ export class User extends Entity<UserProps> {
     this.touch()
   }
 
-  // set packageId(packageId: string[]) {
-  //   this.props.packageId = packageId
+  set packageId(packageId: string[]) {
+    this.props.packageId = packageId
 
-  //   this.touch()
-  // }
+    this.touch()
+  }
 
   set password(password: string) {
     this.props.password = password

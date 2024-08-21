@@ -2,12 +2,12 @@ import { DomainEvents } from 'src/core/events/domain-events'
 import { EventHandler } from 'src/core/events/event-handler'
 import { PackageRepository } from 'src/domain/fast-feet/application/repository/package-repository'
 import { CreatePackageEvent } from 'src/domain/fast-feet/enteprise/events/create-package'
-import { SendNotifications } from '../user-case/send-notification'
+import { SendNotificationsUseCase } from '../user-case/send-notification'
 
 export class OnCreatePackage implements EventHandler {
   constructor(
     private packageRepository: PackageRepository,
-    private sendNotifications: SendNotifications,
+    private sendNotifications: SendNotificationsUseCase,
   ) {
     this.setupSubscriptions()
   }

@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import { InMemoryUser } from '../../../../../../test/repository/in-memory-user'
 import { DeleteUserUseCase } from './delete-user'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 
 let inMemoryUser: InMemoryUser
@@ -14,11 +13,11 @@ describe('Delete user', async () => {
   })
   test('should be abble to delete user', async () => {
     const user = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
       role: 'admin',
+      packageId: [],
       createdAt: new Date(),
     })
 

@@ -16,6 +16,7 @@ describe('Create user', async () => {
       cpf: '000.000.111-85',
       password: '123456',
       role: 'admin',
+      packageId: [],
       createdAt: new Date(),
     })
     expect(inMemoryUser.items).toHaveLength(1)

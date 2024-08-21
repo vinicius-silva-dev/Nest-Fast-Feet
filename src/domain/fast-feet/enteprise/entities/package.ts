@@ -7,32 +7,32 @@
 // }
 
 import { AggregateRoot } from 'src/core/entities/aggregate-root'
-import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 import { CreatePackageEvent } from '../events/create-package'
-import { StatusValueObject } from './value-object/status'
+// import { StatusValueObject } from './value-object/status'
+import { UniqueEntityId } from 'src/core/entities/unique-entity-id'
 // import { Recipient } from './recipient'
 
 export interface PackageProps {
-  id: UniqueEntityId
   name: string
+  userId: string
   recipientId: string
-  status: StatusValueObject
+  status: string
   createdAt: Date
   updatedAt?: Date | null
 }
 
 export class Package extends AggregateRoot<PackageProps> {
-  get id() {
-    return this.props.id
-  }
+  // get id() {
+  //   return this.props.id
+  // }
 
   get name() {
     return this.props.name
   }
 
-  // get userId() {
-  //   return this.props.userId
-  // }
+  get userId() {
+    return this.props.userId
+  }
 
   get recipientId() {
     return this.props.recipientId
@@ -50,13 +50,13 @@ export class Package extends AggregateRoot<PackageProps> {
     return this.props.updatedAt
   }
 
-  set status(status: StatusValueObject) {
+  set status(status) {
     this.props.status = status
   }
 
-  // set userId(userId: string) {
-  //   this.props.userId = userId
-  // }
+  set userId(userId: string) {
+    this.props.userId = userId
+  }
 
   // set recipient(recipient: Recipient) {
   //   this.props.recipient = recipient
@@ -70,8 +70,8 @@ export class Package extends AggregateRoot<PackageProps> {
   //   this.props.updatedAt = updatedAt
   // }
 
-  static create(props: PackageProps) {
-    const _package = new Package(props)
+  static create(props: PackageProps, id?: UniqueEntityId) {
+    const _package = new Package(props, id)
     if (!_package.id) {
       _package.addDomainEvent(new CreatePackageEvent(_package))
     }

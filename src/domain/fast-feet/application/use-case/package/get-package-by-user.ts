@@ -1,5 +1,6 @@
 import { Package } from 'src/domain/fast-feet/enteprise/entities/package'
 import { PackageRepository } from '../../repository/package-repository'
+import { Injectable } from '@nestjs/common'
 
 interface GetPackageByUserRequest {
   id: string
@@ -9,6 +10,7 @@ type GetPackageByUserResponse = {
   _package: Package[]
 }
 
+@Injectable()
 export class GetPackageByUserUseCase {
   constructor(private packageRepository: PackageRepository) {}
   async execute({

@@ -7,7 +7,8 @@ const userSchema = z.object({
   name: z.string(),
   cpf: z.string(),
   password: z.string(),
-  role: z.enum(['Admin', 'Entregador']).default('Entregador')
+  role: z.enum(['Admin', 'Entregador']).default('Entregador'),
+  packageId: z.array(z.string()).default([])
 })
 
 // z.enum(["AGUARDANDO", "RETIRADO", "ENTREGUE", "DEVOLVIDO", "CANCELADO"]).default("AGUARDANDO")
@@ -20,13 +21,14 @@ export class CreateUserController {
   @Post()
   @HttpCode(201)
   async create(@Body() body: User) {
-    const { name, cpf, password, role } = body
+    const { name, cpf, password, role, packageId } = body
 
     const result = await this.createUserUseCase.execute({
       name,
       cpf,
       password,
       role,
+      packageId,
       createdAt: new Date()
     })
 

@@ -10,6 +10,7 @@ export class PrismaUserMappers {
       cpf: raw.cpf,
       password: raw.password,
       role: raw.role,
+      packageId: [],
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
     }, new UniqueEntityId(raw.id))
@@ -22,6 +23,7 @@ export class PrismaUserMappers {
       cpf: user.cpf,
       password: user.password,
       role: user.role,
+      // package: user.packageId,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     }

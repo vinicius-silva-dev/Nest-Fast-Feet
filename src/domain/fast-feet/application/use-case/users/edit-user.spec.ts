@@ -17,6 +17,7 @@ describe('Edit user', async () => {
       cpf: '000.000.111-85',
       password: '123456',
       role: 'admin',
+      packageId: [],
       createdAt: new Date(),
     })
 

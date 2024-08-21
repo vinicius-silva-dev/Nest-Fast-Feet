@@ -1,5 +1,6 @@
 import { Recipient } from 'src/domain/fast-feet/enteprise/entities/recipient'
 import { RecipientRepository } from '../../repository/recipient-repository'
+import { Injectable } from '@nestjs/common'
 
 interface GetRecipientByIdRequest {
   recipientId: string
@@ -8,7 +9,7 @@ interface GetRecipientByIdRequest {
 type GetRecipientByIdResponse = {
   recipient: Recipient
 }
-
+@Injectable()
 export class GetRecipientByIdUseCase {
   constructor(private recipientRepository: RecipientRepository) {}
   async execute({

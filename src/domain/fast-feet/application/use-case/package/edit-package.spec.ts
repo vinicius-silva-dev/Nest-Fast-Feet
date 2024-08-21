@@ -20,16 +20,15 @@ describe('Edit package', async () => {
   })
   test('should be abble to edit package', async () => {
     const user = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
       role: 'entregador',
+      packageId: [],
       createdAt: new Date(),
     })
 
     const recipient = await Recipient.create({
-      id: new UniqueEntityId('recipient-1'),
       name: 'Vinicius Silva',
       packageId: [],
       rua: 'Ali Perto',
@@ -43,11 +42,10 @@ describe('Edit package', async () => {
     })
 
     const _package = await Package.create({
-      id: new UniqueEntityId('package-1'),
       name: 'Vinicius Silva',
       userId: user.id.toString(),
       recipientId: recipient.id.toString(),
-      status: new StatusValueObject(),
+      status: new StatusValueObject().toValue(),
       createdAt: new Date(),
     })
 
@@ -55,7 +53,6 @@ describe('Edit package', async () => {
 
     await sut.execute({
       id: new UniqueEntityId('package-1'),
-      name: 'Vinicius Silva',
       status: new StatusValueObject(Status.aguardando),
     })
     expect(inMemoryEdit.items[0]).toMatchObject({

@@ -9,6 +9,7 @@ interface CreateUserRequest {
   cpf: string
   password: string
   role: string
+  packageId?: string[]
   createdAt: Date
 }
 
@@ -24,6 +25,7 @@ export class CreateUserUseCase {
     cpf,
     password,
     role,
+    packageId,
     createdAt,
   }: CreateUserRequest): Promise<CreateUserResponse> {
     const user = await User.create({
@@ -31,6 +33,7 @@ export class CreateUserUseCase {
       cpf,
       password: await hash(password, 8),
       role,
+      packageId,
       createdAt,
     })
 

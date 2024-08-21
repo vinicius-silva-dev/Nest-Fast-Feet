@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import { InMemoryPackage } from '../../../../../../test/repository/in-memory-packege'
-import { UniqueEntityId } from '../../../../../core/entities/unique-entity-id'
 import { Package } from '../../../enteprise/entities/package'
 import { StatusValueObject } from '../../../enteprise/entities/value-object/status'
 import { Recipient } from '../../../enteprise/entities/recipient'
@@ -18,16 +17,15 @@ describe('Fetch Nearby package use case', async () => {
   })
   test('should be abble to fetch nearby package', async () => {
     const user = await User.create({
-      id: new UniqueEntityId('user-1'),
       name: 'Vinicius Silva',
       cpf: '000.000.111-85',
       password: '123456',
       role: 'entregador',
+      packageId: [],
       createdAt: new Date(),
     })
 
     const recipient1 = await Recipient.create({
-      id: new UniqueEntityId('recipient-1'),
       name: 'Vinicius Silva',
       rua: 'Ali Perto',
       packageId: [],
@@ -41,7 +39,6 @@ describe('Fetch Nearby package use case', async () => {
     })
 
     const recipient2 = await Recipient.create({
-      id: new UniqueEntityId('recipient-2'),
       name: 'Vinicius Silva',
       rua: 'Br-364 km 15',
       packageId: [],
@@ -55,20 +52,18 @@ describe('Fetch Nearby package use case', async () => {
     })
 
     const _package1 = await Package.create({
-      id: new UniqueEntityId('package-1'),
       name: 'Computador Acer Nitro 5 515-65',
       userId: user.id.toString(),
       recipientId: recipient1.id.toString(),
-      status: new StatusValueObject(),
+      status: new StatusValueObject().toValue(),
       createdAt: new Date(),
     })
 
     const _package2 = await Package.create({
-      id: new UniqueEntityId('package-2'),
       name: 'Mouse sem fio',
       userId: user.id.toString(),
       recipientId: recipient2.id.toString(),
-      status: new StatusValueObject(),
+      status: new StatusValueObject().toValue(),
       createdAt: new Date(),
     })
 

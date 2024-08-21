@@ -4,7 +4,7 @@ import { GetRecipientByIdUseCase } from 'src/domain/fast-feet/application/use-ca
 
 
 @Controller('/recipient/:id')
-export class FetchUsersController {
+export class FetchRecipientController {
   constructor(private getRecipient: GetRecipientByIdUseCase) {}
 
   @Get()

@@ -5,30 +5,28 @@ import { AppModule } from 'src/app.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest'
+import { UserFactory } from 'test/factory/make-user';
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { RecipientFactory } from 'test/factory/make-recipient';
-// import { hash } from 'bcrypt';
 
-describe('Edit Recipient e2e', () => {
+describe('Create Package e2e', () => {
   let app: INestApplication
   let prisma: PrismaService
-  // let recipientFactory: RecipientFactory
+  let userFactory: UserFactory
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [AppModule, DatabaseModule],
-        providers: [RecipientFactory]
+        providers: [UserFactory]
       }).compile();
     
     app = moduleRef.createNestApplication()
 
     prisma = moduleRef.get(PrismaService)
-    // recipientFactory = moduleRef.get(RecipientFactory)
-  
+    userFactory = moduleRef.get(UserFactory)
     await app.init()
   });
 
-  test('[PUT] should be abble to edit recipient E2E', async () => {
-    // const recipient = await recipientFactory.makePrismaRecipient()
+  test('[POST] should be abble to create package E2E', async () => {
+    const user = await userFactory.makePrismaUser()
 
     const recipient = await prisma.recipient.create({
       data: {
@@ -41,28 +39,27 @@ describe('Edit Recipient e2e', () => {
         latitude: -10.4589548,
         longitude: -62.4639924
       }
+        
+    })
+    try {
+      const result = await request(app.getHttpServer()).post('/package').send({
+        name: 'Mouse sem fio',
+        userId: user.id.toString(),
+        recipientId: recipient.id,
+      })
+  
+      expect(result.statusCode).toBe(201)
+    } catch (error) {
+      console.log(error)
+    }
+   
+
+    const packageOnDatabase = await prisma.package.findFirst({
+      where: {
+        name: 'Mouse sem fio',
+      }
     })
 
-    const recipientId = recipient.id
-    const result = await request(app.getHttpServer()).put(`/recipient/${recipientId}`).send({
-      rua: 'Frei Caneca',
-      numero: 1988,
-      bairro: 'Jardim Esperança',
-      cidade: recipient.cidade,
-      estado: recipient.estado,
-      latitude: -10.4589549,
-      longitude: -62.4639925
-    })
-    
-
-    expect(result.statusCode).toBe(204)
-
-    // const recipientOnDatabase = await prisma.recipient.findFirst({
-    //   where: {
-    //     role: 'Admin'
-    //   }
-    // })
-
-    // expect(recipientOnDatabase).toBeTruthy()
+    expect(packageOnDatabase).toBeTruthy()
   })
 })
