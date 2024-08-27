@@ -1,13 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/domain/fast-feet/application/use-case/users/create-user';
 import { z } from 'zod';
+import { ZodValidationPipes } from '../../pipes/zod-validation-pipes';
+import { Roles } from 'src/infra/decorator/roles.decorator';
+import { Role } from 'src/infra/user-enum/user.enum';
+// import { CurrentUser } from 'src/infra/auth/current-user-decorator';
+// import { UserSchema } from 'src/infra/auth/jwt-strategy';
+
 
 const userSchema = z.object({
   name: z.string(),
   cpf: z.string(),
   password: z.string(),
-  role: z.enum(['Admin', 'Entregador']).default('Entregador'),
+  role: z.enum(['admin', 'entregador']).default('entregador'),
   packageId: z.array(z.string()).default([])
 })
 
@@ -16,11 +22,17 @@ type User = z.infer<typeof userSchema>
 
 @Controller('/user')
 export class CreateUserController {
-  constructor(private createUserUseCase: CreateUserUseCase) { }
+  constructor(private createUserUseCase: CreateUserUseCase) {}
 
   @Post()
+  @Roles(Role.Admin)
   @HttpCode(201)
-  async create(@Body() body: User) {
+  // @CurrentUser() user: UserSchema,
+  @UsePipes(new ZodValidationPipes(userSchema))
+  async create(
+    @Body() body: User,
+    // @CurrentUser() user: UserSchema,
+  ) {
     const { name, cpf, password, role, packageId } = body
 
     const result = await this.createUserUseCase.execute({

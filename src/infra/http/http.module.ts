@@ -38,9 +38,12 @@ import { SendNotification } from './controllers/send-notification.controller'
 import { SendNotificationsUseCase } from 'src/domain/notifications/application/user-case/send-notification'
 import { ReadNotificationUseCase } from 'src/domain/notifications/application/user-case/read-notification'
 import { readNotification } from './controllers/read-notification.controller'
+import { UploadFileController } from './controllers/attachment/upload-file.controller'
+import { UploadFileUseCase } from 'src/domain/fast-feet/application/use-case/upload-file'
+import { StorageModule } from './storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule],
   controllers: [
     CreateUserController,
     FetchUsersController,
@@ -60,7 +63,9 @@ import { readNotification } from './controllers/read-notification.controller'
     FetchNearbyPackageController,
 
     SendNotification,
-    readNotification
+    readNotification,
+
+    UploadFileController
     
   ],
   providers: [
@@ -82,7 +87,9 @@ import { readNotification } from './controllers/read-notification.controller'
     FetchNearbyPackageUseCase,
 
     SendNotificationsUseCase,
-    ReadNotificationUseCase
+    ReadNotificationUseCase,
+
+    UploadFileUseCase
   ]
 })
 export class HttpModule {}

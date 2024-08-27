@@ -9,6 +9,8 @@ import { PackageRepository } from 'src/domain/fast-feet/application/repository/p
 import { PrismaPackageRepository } from './prisma/repository/prisma-package-repository';
 import { NotificationsRepository } from 'src/domain/notifications/application/repository/notification-repository';
 import { PrismaNotificationRepository } from './prisma/repository/prisma-notification-repository';
+import { AttachmentRepository } from 'src/domain/fast-feet/application/repository/attachment-repository';
+import { PrismaAttachmentRepository } from './prisma/repository/prisma-attachment-repository';
 
 @Module({
   providers: [
@@ -30,6 +32,11 @@ import { PrismaNotificationRepository } from './prisma/repository/prisma-notific
     },
 
     {
+      provide: AttachmentRepository,
+      useClass: PrismaAttachmentRepository
+    },
+
+    {
       provide: NotificationsRepository,
       useClass: PrismaNotificationRepository
     }
@@ -39,7 +46,8 @@ import { PrismaNotificationRepository } from './prisma/repository/prisma-notific
     UserRepository,
     RecipientRepository,
     PackageRepository,
-    NotificationsRepository
+    NotificationsRepository,
+    AttachmentRepository
   ]
 })
 export class DatabaseModule {}

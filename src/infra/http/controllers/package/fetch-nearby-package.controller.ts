@@ -21,8 +21,8 @@ export class FetchNearbyPackageController {
   ) {
 
     const result = await this.fetchNearbyUseCase.execute({
-      userLatitude: latitude,
-      userLongitude: longitude
+      userLatitude: Number(latitude),
+      userLongitude: Number(longitude)
     })
 
     if (!result) {

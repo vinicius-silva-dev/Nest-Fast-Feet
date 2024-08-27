@@ -32,7 +32,7 @@ describe('[POST] Authenticate E2E', () => {
         name: 'Vinicius Silva',
         cpf: '03544587432',
         password: await hash('123456', 8),
-        role: 'Admin'
+        role: 'admin'
       }
     })
     // console.log(user)

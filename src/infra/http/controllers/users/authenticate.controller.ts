@@ -10,7 +10,7 @@ const envSchema = z.object({
 
 type Auth = z.infer<typeof envSchema>
 
-@Controller('auth')
+@Controller('/auth')
 export class AuthenticateController {
   constructor(
     private authenticateUseCase: AuthenticateUseCase
@@ -29,6 +29,7 @@ export class AuthenticateController {
       throw new Error('Fail authenticate')
     }
 
+    console.log(result.token)
     return {
       acess_token: result.token
     }
