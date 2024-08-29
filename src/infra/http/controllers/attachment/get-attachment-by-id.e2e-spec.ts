@@ -2,15 +2,13 @@
 import { Test } from '@nestjs/testing';
 import { describe, test } from 'vitest'
 import { AppModule } from 'src/app.module';
-// import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest'
 import { UserFactory } from 'test/factory/make-user';
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 
-
-describe('Read Notification e2e', () => {
+describe('Get Package e2e', () => {
   let app: INestApplication
   let prisma: PrismaService
   let userFactory: UserFactory
@@ -27,8 +25,11 @@ describe('Read Notification e2e', () => {
     await app.init()
   });
 
-  test('[POST] should be abble to upload file E2E', async () => {
-    const user = await userFactory.makePrismaUser()
+  test('[GET] should be abble to get package E2E', async () => {
+   
+    const user1 = await userFactory.makePrismaUser()
+
+    // const user2 = await userFactory.makePrismaUser()
 
     const recipient = await prisma.recipient.create({
       data: {
@@ -43,26 +44,44 @@ describe('Read Notification e2e', () => {
       }
         
     })
-    const _package = await prisma.package.create({
-      data: {
-        name: 'Mouse sem fio',
-        status: 'aguardando',
-        userId: user.id.toString(),
-        recipientId: recipient.id,
-      }
-        
-    })
-    
-    const result = await request(app.getHttpServer()).post(`/attachment/${user.id}/${recipient.id}/${_package.id}`).attach('file',
-    './test/img/exemple_img.jpeg'
-    )
 
+    const _package = await prisma.package.create({
+        data: {
+          name: 'Mouse sem fio',
+          status: 'aguardando',
+          userId: user1.id.toString(),
+          recipientId: recipient.id,
+        }
+      })
+
+    await prisma.attachment.create({
+      data: {
+        title: 'img_capa.jpg',
+        url: 'img_capa.jpg',
+        userId: user1.id.toString(),
+        recipientId: recipient.id,
+        packageId: _package.id
+      }
+    })
+
+    const result = await request(app.getHttpServer()).get(`/attachment/${_package.id}`).send()
+      
     console.log(result.body)
-    expect(result.statusCode).toBe(201)
+    expect(result.statusCode).toBe(200)
     expect(result.body).toEqual(
       expect.objectContaining({
-        attachmentId: expect.any(String)
+        props: expect.objectContaining({
+          title: 'img_capa.jpg',
+        })
       })
     )
+
+    const attachmentOnDatabase = await prisma.attachment.findFirst({
+      where: {
+        title: 'img_capa.jpg',
+      }
+    })
+    console.log(attachmentOnDatabase)
+    expect(attachmentOnDatabase).toBeTruthy()
   })
 })

@@ -1,6 +1,7 @@
 import { User } from 'src/domain/fast-feet/enteprise/entities/user'
 import { UserRepository } from '../../repository/user-repository'
 import { Injectable } from '@nestjs/common'
+import { hash } from 'bcrypt'
 
 interface EditUserRequest {
   id: string
@@ -27,7 +28,7 @@ export class EditUserUseCase {
     }
 
     user.role = role
-    user.password = password
+    user.password = await hash(password, 8)
 
     await this.userRepository.save(user)
 

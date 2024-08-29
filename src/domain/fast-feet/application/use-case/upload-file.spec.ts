@@ -20,7 +20,8 @@ describe('Create user', async () => {
       fileType: 'image/jpeg',
       body: Buffer.from(''),
       userId: 'entregador-1',
-      recipientId: 'recipient-1'
+      recipientId: 'recipient-1',
+      attachments: []
     })
 
     console.log(inMemoryAttachments.items)

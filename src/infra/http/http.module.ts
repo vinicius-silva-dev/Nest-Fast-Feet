@@ -41,6 +41,8 @@ import { readNotification } from './controllers/read-notification.controller'
 import { UploadFileController } from './controllers/attachment/upload-file.controller'
 import { UploadFileUseCase } from 'src/domain/fast-feet/application/use-case/upload-file'
 import { StorageModule } from './storage/storage.module'
+import { GetAttachmentByUserUseCase } from 'src/domain/fast-feet/application/use-case/get-attachment-by-id'
+import { GetAttachmentByUser } from './controllers/attachment/get-attachment-by-id.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, StorageModule],
@@ -65,7 +67,8 @@ import { StorageModule } from './storage/storage.module'
     SendNotification,
     readNotification,
 
-    UploadFileController
+    UploadFileController,
+    GetAttachmentByUser
     
   ],
   providers: [
@@ -89,7 +92,8 @@ import { StorageModule } from './storage/storage.module'
     SendNotificationsUseCase,
     ReadNotificationUseCase,
 
-    UploadFileUseCase
+    UploadFileUseCase,
+    GetAttachmentByUserUseCase
   ]
 })
 export class HttpModule {}

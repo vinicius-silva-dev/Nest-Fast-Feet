@@ -9,7 +9,8 @@ interface UploadeFileUseCaseRequest {
   fileType: string
   body: Buffer
   userId: string
-  recipientId: string
+  recipientId: string,
+  packageId: string
 }
 
 type UploaderFileResponse = {
@@ -28,7 +29,8 @@ export class UploadFileUseCase {
     fileType,
     body,
     userId,
-    recipientId
+    recipientId,
+    packageId
   }: UploadeFileUseCaseRequest): Promise<UploaderFileResponse> {
 
     const {url} = await this.uploader.upload({
@@ -41,7 +43,8 @@ export class UploadFileUseCase {
       title: fileName,
       url,
       userId,
-      recipientId
+      recipientId,
+      packageId
     })
 
     await this.attachmentRepository.create(attachment)

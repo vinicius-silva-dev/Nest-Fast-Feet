@@ -2,16 +2,8 @@
 import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadFileUseCase } from 'src/domain/fast-feet/application/use-case/upload-file';
-// import { z } from 'zod';
 
-// const envSchema = z.object({
-//   userId: z.string(),
-//   recipientId: z.string()
-// })
-
-// type Attachment = z.infer<typeof envSchema>
-
-@Controller('/attachment/:userId/:recipientId')
+@Controller('/attachment/:userId/:recipientId/:packageId')
 export class UploadFileController {
   constructor(
     private uploaderFile: UploadFileUseCase
@@ -30,24 +22,31 @@ export class UploadFileController {
     )
     file: Express.Multer.File,
     @Param('userId') userId: string,
-    @Param('recipientId') recipientId: string
+    @Param('recipientId') recipientId: string,
+    @Param('packageId') packageId: string
   ) {
-
-    const result = await this.uploaderFile.execute({
-      fileName: file.originalname,
-      fileType: file.mimetype,
-      body: file.buffer,
-      userId,
-      recipientId,
-    })
-    // console.log(result.attachment)
-    if (!result) {
-      throw new Error('Cannot create attachment!')
+    console.log(file)
+    try {
+      const result = await this.uploaderFile.execute({
+        fileName: file.originalname,
+        fileType: file.mimetype,
+        body: file.buffer,
+        userId,
+        recipientId,
+        packageId
+      })
+      
+      if (!result) {
+        throw new Error('Cannot create attachment!')
+      }
+  
+      return {
+        attachment: result.attachment,
+        attachmentId: result.attachment.id.toString()
+      }
+    } catch (error) {
+      console.log(error)
     }
-
-    return {
-      attachment: result.attachment,
-      attachmentId: result.attachment.id.toString()
-    }
+    
   }
 }

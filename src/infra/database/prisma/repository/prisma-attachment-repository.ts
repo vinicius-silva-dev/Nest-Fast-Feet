@@ -14,4 +14,18 @@ export class PrismaAttachmentRepository implements AttachmentRepository {
       data
     })
   }
+
+  async findById(id: string): Promise<Attachments | null> {
+    const result = await this.prisma.attachment.findFirst({
+      where: {
+        packageId: id
+      }
+    })
+  
+    if (!result) {
+      return null
+    }
+
+    return PrismaAttachementMapper.toDomain(result)
+  }
 }

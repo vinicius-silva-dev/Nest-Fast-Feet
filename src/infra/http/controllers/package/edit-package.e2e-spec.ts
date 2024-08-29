@@ -48,19 +48,26 @@ describe('Edit Package e2e', () => {
         status: 'aguardando',
         userId: user.id.toString(),
         recipientId: recipient.id,
-
       }
     })
-    try {
-      const result = await request(app.getHttpServer()).put(`/package/${package1.id}`).send({
-        status: 'retirado'
+
+    await prisma.attachment.create({
+        data: {
+          title: 'img_capa.jpg',
+          url: 'img_capa.jpg',
+          userId: user.id.toString(),
+          recipientId: recipient.id,
+          packageId: package1.id
+        }
       })
+      
+    const result = await request(app.getHttpServer()).put(`/package/${package1.id}`).send({
+      userId: user.id.toString(),
+      status: 'entregue'
+    })
+
   
-      expect(result.statusCode).toBe(204)
-    } catch (error) {
-      console.log('Deu ruim', error)
-    }
-   
+    expect(result.statusCode).toBe(204)
 
     // const packageOnDatabase = await prisma.package.findFirst({
     //   where: {

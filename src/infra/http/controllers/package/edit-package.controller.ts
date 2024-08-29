@@ -6,6 +6,7 @@ import { StatusValueObject } from 'src/domain/fast-feet/enteprise/entities/value
 import { z } from 'zod';
 
 const envSchema = z.object({
+  userId: z.string(),
   status: z.enum([
     'aguardando',
     'retirado',
@@ -25,14 +26,18 @@ export class EditPackageController {
   @HttpCode(204)
   async editPackage(
     @Body() body: PackageSchema,
-    @Param('id') packageId: UniqueEntityId
+    @Param('id') packageId: string
   ) {
-    const {status} = body
+  
+    const {userId ,status} = body
+    console.log(status)
     const result = await this.editPackageUseCase.execute({
-      id: packageId,
+      id: new UniqueEntityId(packageId),
+      userId,
       status: new StatusValueObject(status)
     })
 
+    
     if (!result) {
       throw new Error('Failed to edit package')
     }

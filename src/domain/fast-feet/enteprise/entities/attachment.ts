@@ -7,6 +7,7 @@ interface AttachmentProps {
   url: string
   userId: string
   recipientId: string
+  packageId: string
 }
 
 export class Attachments extends Entity<AttachmentProps> {
@@ -24,6 +25,10 @@ export class Attachments extends Entity<AttachmentProps> {
 
   get recipientId() {
     return this.props.recipientId
+  }
+
+  get packageId() {
+    return this.props.packageId
   }
 
   static create(props: AttachmentProps, id?: UniqueEntityId) {

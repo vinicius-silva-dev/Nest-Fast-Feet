@@ -9,14 +9,17 @@ import {
   StatusValueObject,
   Status,
 } from 'src/domain/fast-feet/enteprise/entities/value-object/status'
+import { InMemoryAttachments } from 'test/repository/in-memory-attachments'
 
 let inMemoryEdit: InMemoryPackage
+let inMemoryAttachment: InMemoryAttachments
 let sut: EditPackageUseCase
 describe('Edit package', async () => {
   beforeEach(() => {
     inMemoryEdit = new InMemoryPackage()
+    inMemoryAttachment = new InMemoryAttachments()
 
-    sut = new EditPackageUseCase(inMemoryEdit)
+    sut = new EditPackageUseCase(inMemoryEdit, inMemoryAttachment)
   })
   test('should be abble to edit package', async () => {
     const user = await User.create({

@@ -50,6 +50,7 @@ model Package {
   updatedAt DateTime? @default(now()) @map("updated_at")
   recipientId String @map("recipient_id")
   userId String @map("user_id")
+  attachments Attachment[]
 
   recipient Recipient @relation(fields: [recipientId], references: [id])
   user User @relation(fields: [userId], references: [id])
@@ -65,9 +66,11 @@ model Attachment {
   updatedAt DateTime? @default(now()) @map("updated_at")
   recipientId String @map("recipient_id")
   userId String @map("user_id")
+  packageId String @map("package_id")
 
   recipient Recipient @relation(fields: [recipientId], references: [id])
   user User @relation(fields: [userId], references: [id])
+  package Package @relation(fields: [packageId], references: [id])
 
   @@map("attachments")
 }

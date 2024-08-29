@@ -22,19 +22,15 @@ describe('Create User e2e', () => {
   });
 
   test('[POST] should be abble to create user E2E', async () => {
-    try {
-      const result = await request(app.getHttpServer()).post('/user').send({
-        name: 'Vinicius Silva',
-        cpf: '03544587432',
-        password: '123456',
-        role: 'Admin'
-      })
-  
-      expect(result.statusCode).toBe(201)
-    } catch (error) {
-      console.log(error)
-    }
-   
+
+    const result = await request(app.getHttpServer()).post('/user').send({
+      name: 'Vinicius Silva',
+      cpf: '03544587432',
+      password: '123456',
+      role: 'admin'
+    })
+
+    expect(result.statusCode).toBe(201)
 
     const userOnDatabase = await prisma.user.findUnique({
       where: {

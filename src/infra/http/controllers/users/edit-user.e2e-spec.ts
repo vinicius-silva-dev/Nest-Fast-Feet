@@ -7,12 +7,14 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest'
 import { DatabaseModule } from 'src/infra/database/database.module';
 import { UserFactory } from 'test/factory/make-user';
+import { JwtService } from '@nestjs/jwt';
 // import { hash } from 'bcrypt';
 
 describe('Edit User e2e', () => {
   let app: INestApplication
   // let prisma: PrismaService
   let userFactory: UserFactory
+  let jwt: JwtService
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
         imports: [AppModule, DatabaseModule],
@@ -20,9 +22,9 @@ describe('Edit User e2e', () => {
       }).compile();
     
     app = moduleRef.createNestApplication()
-
     // prisma = moduleRef.get(PrismaService)
     userFactory = moduleRef.get(UserFactory)
+    jwt = moduleRef.get(JwtService)
   
     await app.init()
   });
@@ -38,10 +40,13 @@ describe('Edit User e2e', () => {
     //     role: 'Admin'
     //   }
     // })
-
+    const accessToken = jwt.sign({ sub: user.id.toString()})
     const userId = user.id.toString()
 
-    const result = await request(app.getHttpServer()).put(`/user/${userId}`).send({
+    const result = await request(app.getHttpServer())
+    .put(`/user/${userId}`)
+    .set('Authorization', `Bearer ${accessToken}`)
+    .send({
       password: user.password,
       role: 'Entregador'
     })

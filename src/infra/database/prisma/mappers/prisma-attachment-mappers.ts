@@ -10,7 +10,8 @@ export class PrismaAttachementMapper {
       title: raw.title,
       url: raw.url,
       userId: raw.userId,
-      recipientId: raw.recipientId
+      recipientId: raw.recipientId,
+      packageId: raw.packageId
     }, new UniqueEntityId(raw.id)) 
   }
 
@@ -21,6 +22,7 @@ export class PrismaAttachementMapper {
       url: attachement.url,
       userId: attachement.userId,
       recipientId: attachement.recipientId,
+      packageId: attachement.packageId
     }
   }
 
