@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CreatePackageUseCase } from 'src/domain/fast-feet/application/use-case/package/create-package'
 import { z } from 'zod';
 
@@ -22,6 +23,7 @@ export class CreatePackageController {
   constructor(private packageUseCase: CreatePackageUseCase) {}
 
   @Post()
+  @UseGuards( AuthGuard('jwt'))
   async create(
     @Body() body: _Package
   ) {

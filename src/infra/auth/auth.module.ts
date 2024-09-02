@@ -1,11 +1,19 @@
 /* eslint-disable prettier/prettier */
+import 'dotenv'
 import { Module } from '@nestjs/common'
+// import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { EnvModule } from 'src/env/env.module';
 import { EnvService } from 'src/env/env.service';
+// import { JwtAuthGuard } from './jwt-auth';
+import { JwtStrategy } from './jwt-strategy';
+import { PassportModule } from '@nestjs/passport';
+import { APP_GUARD } from '@nestjs/core';
+// import { RoleAdmin } from '../middleware/role-admin';
 
 @Module({
   imports: [
+    PassportModule,
     JwtModule.registerAsync({
       imports: [EnvModule],
       inject: [EnvService],
@@ -25,7 +33,13 @@ import { EnvService } from 'src/env/env.service';
     })
   ],
   providers: [
-    EnvService
+    JwtStrategy,
+    EnvService,  
+    {
+      provide: APP_GUARD,
+      useClass: JwtStrategy,
+    },
+  
   ]
 })
 export class AuthModule {}

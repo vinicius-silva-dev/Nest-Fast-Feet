@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Post } from '@nestjs/common'
 import { AuthenticateUseCase } from 'src/domain/fast-feet/application/use-case/users/authenticate'
+import { Public } from 'src/infra/auth/public'
 import { z } from 'zod'
 
 const envSchema = z.object({
@@ -17,6 +18,7 @@ export class AuthenticateController {
   ) {}
 
   @Post()
+  @Public()
   async auth(@Body() body: Auth) {
     const { cpf, password } = body
 

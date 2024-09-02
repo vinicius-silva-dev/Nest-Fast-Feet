@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, HttpCode, Param, Put } from '@nestjs/common';
-
+import { Body, Controller, HttpCode, Param, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { EditUserUseCase } from 'src/domain/fast-feet/application/use-case/users/edit-user';
+// import { AuthGuard } from 'src/infra/auth/auth-guard';
 import { z } from 'zod';
 
 const userSchema = z.object({
   password: z.string(),
-  role: z.enum(['Admin', 'Entregador']).default('Entregador')
+  role: z.enum(['admin', 'entregador']).default('entregador')
 })
 
 // z.enum(["AGUARDANDO", "RETIRADO", "ENTREGUE", "DEVOLVIDO", "CANCELADO"]).default("AGUARDANDO")
@@ -17,6 +18,7 @@ export class EditUserController {
   constructor(private editUserUseCase: EditUserUseCase) { }
 
   @Put()
+  @UseGuards( AuthGuard('jwt'))
   @HttpCode(204)
   async editUser(
     @Body() body: User,

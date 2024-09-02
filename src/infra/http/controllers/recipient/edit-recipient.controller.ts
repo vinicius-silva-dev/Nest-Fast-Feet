@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, HttpCode, Param, Put } from '@nestjs/common'
+import { Body, Controller, HttpCode, Param, Put, UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { EditRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/edit-recipient'
 import { z } from 'zod'
 
@@ -18,6 +19,7 @@ export class EditRecipientController {
   constructor(private editRecipientUseCase: EditRecipientsUseCase) {}
 
   @Put()
+  @UseGuards( AuthGuard('jwt'))
   @HttpCode(204)
   async editRecipient(
     @Body() body: Recipient,

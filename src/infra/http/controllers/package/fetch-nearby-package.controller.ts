@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FetchNearbyPackageUseCase } from 'src/domain/fast-feet/application/use-case/package/fetch-nearby-package'
 // import { z } from 'zod';
 
@@ -15,6 +16,7 @@ export class FetchNearbyPackageController {
   constructor(private fetchNearbyUseCase: FetchNearbyPackageUseCase) {}
 
   @Get()
+  @UseGuards( AuthGuard('jwt'))
   async fetchNearby(
     @Param('latitude') latitude: number,
     @Param('longitude') longitude: number,

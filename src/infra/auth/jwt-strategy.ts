@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
+import 'dotenv'
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { EnvService } from 'src/env/env.service'
+import { PrismaClient } from '@prisma/client'
 import { z } from 'zod'
 
 const tokenPayloadSchema = z.object({
@@ -30,6 +32,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   // Se dentro do token recebido não for condizente ao tipo informado na variável tokenSchema, vai dar erro.
   async validate(payload: UserSchema) {
+    const prisma = new PrismaClient()
+    
+    const user = await prisma.user.findUnique({
+      where: {
+        id: payload.sub
+      }
+    })
+    console.log(user)
+    if (user.role !== 'admin') {
+      throw new Error('Unatorization!!')
+    }
+
     return tokenPayloadSchema.parse(payload)
   }
 }

@@ -3,6 +3,7 @@ import { Body, Controller, HttpCode, Post, UsePipes } from '@nestjs/common';
 import { CreateUserUseCase } from 'src/domain/fast-feet/application/use-case/users/create-user';
 import { z } from 'zod';
 import { ZodValidationPipes } from '../../pipes/zod-validation-pipes';
+import { Public } from 'src/infra/auth/public';
 // import { CurrentUser } from 'src/infra/auth/current-user-decorator';
 // import { UserSchema } from 'src/infra/auth/jwt-strategy';
 
@@ -24,6 +25,7 @@ export class CreateUserController {
 
   @Post()
   @HttpCode(201)
+  @Public()
   // @CurrentUser() user: UserSchema,
   @UsePipes(new ZodValidationPipes(userSchema))
   async create(
@@ -40,8 +42,7 @@ export class CreateUserController {
       packageId,
       createdAt: new Date()
     })
-
-    console.log(result.user)
+    
     if (!result) {
       throw new Error('Deu ruim!')
     }

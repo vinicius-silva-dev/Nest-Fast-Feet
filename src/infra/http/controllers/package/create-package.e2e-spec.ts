@@ -41,18 +41,14 @@ describe('Create Package e2e', () => {
       }
         
     })
-    try {
-      const result = await request(app.getHttpServer()).post('/package').send({
-        name: 'Mouse sem fio',
-        userId: user.id.toString(),
-        recipientId: recipient.id,
-      })
-  
-      expect(result.statusCode).toBe(201)
-    } catch (error) {
-      console.log(error)
-    }
-   
+
+    const result = await request(app.getHttpServer()).post('/package').send({
+      name: 'Mouse sem fio',
+      userId: user.id.toString(),
+      recipientId: recipient.id,
+    })
+
+    expect(result.statusCode).toBe(201)
 
     const packageOnDatabase = await prisma.package.findFirst({
       where: {

@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { FetchUsersUseCase } from 'src/domain/fast-feet/application/use-case/users/fetch-users'
 
 
@@ -8,6 +9,7 @@ export class FetchUsersController {
   constructor(private fetchUsers: FetchUsersUseCase) {}
 
   @Get()
+  @UseGuards( AuthGuard('jwt'))
   async usersFetch(
     @Param('role') role: string
   ) {

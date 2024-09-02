@@ -1,14 +1,17 @@
-import { Module } from '@nestjs/common'
-import { AppService } from './app.service'
+import {
+  // MiddlewareConsumer,
+  Module,
+  // NestModule,
+  // RequestMethod,
+} from '@nestjs/common'
 import { DatabaseModule } from './infra/database/database.module'
 import { EnvModule } from './env/env.module'
 import { ConfigModule } from '@nestjs/config'
 import { envSchema } from './env/env'
 import { HttpModule } from './infra/http/http.module'
 import { AuthModule } from './infra/auth/auth.module'
-import { APP_GUARD } from '@nestjs/core'
-import { RolesGuard } from './infra/guards/roles.guards'
 import { JwtModule } from '@nestjs/jwt'
+// import { ValidateRoles } from './infra/middleware/validate-roles'
 
 @Module({
   imports: [
@@ -23,12 +26,11 @@ import { JwtModule } from '@nestjs/jwt'
     HttpModule,
     JwtModule,
   ],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
 })
-export class AppModule {}
+export class AppModule {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(ValidateRoles)
+  //     .forRoutes({ path: 'package', method: RequestMethod.PUT })
+  // }
+}

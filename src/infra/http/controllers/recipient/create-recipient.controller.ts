@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, HttpCode, Post } from '@nestjs/common'
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport';
 import { CreateRecipientsUseCase } from 'src/domain/fast-feet/application/use-case/recipients/create-recipients';
 import { z } from 'zod';
 
@@ -23,6 +24,7 @@ export class CreateRecipientController {
   ) {}
 
   @Post()
+  @UseGuards( AuthGuard('jwt'))
   @HttpCode(201)
   async create(@Body() body: RecipientType) {
     const {

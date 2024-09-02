@@ -13,6 +13,7 @@ interface AuthenticateRequest {
 type AuthenticateResponse = {
   token: string
 }
+
 @Injectable()
 export class AuthenticateUseCase {
   constructor(

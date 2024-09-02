@@ -22,24 +22,19 @@ describe('Create Recipient e2e', () => {
   });
 
   test('[POST] should be abble to create recipient E2E', async () => {
-    try {
-      const result = await request(app.getHttpServer()).post('/recipient').send({
-        name: 'Vinicius Silva',
-        rua: 'Ali Perto',
-        numero: 2544,
-        bairro: 'Luz',
-        cidade: 'Jaru',
-        estado: 'Rondônia',
-        latitude: -10.4589548,
-        longitude: -62.4639924
-      })
-  
-      expect(result.statusCode).toBe(201)
-    } catch (error) {
-      console.log(error)
-    }
    
+    const result = await request(app.getHttpServer()).post('/recipient').send({
+      name: 'Vinicius Silva',
+      rua: 'Ali Perto',
+      numero: 2544,
+      bairro: 'Luz',
+      cidade: 'Jaru',
+      estado: 'Rondônia',
+      latitude: -10.4589548,
+      longitude: -62.4639924
+    })
 
+    expect(result.statusCode).toBe(201)
     const recipientOnDatabase = await prisma.recipient.findFirst({
       where: {
         rua:'Ali Perto',

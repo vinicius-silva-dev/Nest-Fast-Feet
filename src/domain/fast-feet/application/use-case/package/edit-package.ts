@@ -46,9 +46,9 @@ export class EditPackageUseCase {
     }
 
     _package.status = status.toValue()
-    console.log(_package.status)
 
     await this.packageRepository.save(_package)
+    console.log(_package)
 
     return {
       _package,
